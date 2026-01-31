@@ -9,11 +9,11 @@ export default function Home() {
         <Image
           src="/charitymaplogo.png"
           alt="Logo"
-          width={350}
-          height={350}
+          width={550}
+          height={550}
           className="drop-shadow-xl"
         />
-        <h1 className="text-5xl font-bold text-gray-800 mt-8 text-center">
+        <h1 className="text-5xl font-bold text-gray-800 text-center">
           Welcome to <span className="text-transparent bg-clip-text bg-linear-to-r from-rose-500 to-pink-500">Charity Map</span>!
         </h1>
         <p className="mt-6 text-xl text-gray-600 text-center max-w-2xl">
