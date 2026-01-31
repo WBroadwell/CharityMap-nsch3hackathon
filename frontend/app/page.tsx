@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 
@@ -10,8 +11,8 @@ export default function Home() {
         width={450}
         height={450}
       />
-      <h1 className="text-4xl font-bold">Welcome to Charity Map!</h1>
-      <Card>Charity Map is a hub for connecting volunteers and donors with local opportunities and events!</Card>
+      <h1 className="text-4xl font-bold py-5">Welcome to Charity Map!</h1>
+      <Card className="p-5 font-semibold text-md">Charity Map is a hub for connecting volunteers and donors with local opportunities and events!</Card>
     </main>
   );
 }

@@ -10,8 +10,8 @@ export default function NavigationBar() {
           <Link href="/" className="transition hover:scale-110 hover:brightness-90 h-8 w-auto">
             <Image src="/charitymapheart.png" alt="Charity Map Logo" width={32} height={32} />
           </Link>
-          <Link href="events" className="transition text-2xl font-semibold text-blue-900 hover:scale-110 hover:brightness-85">Events</Link>
-          <Link href="addevent" className="transition text-2xl font-semibold text-blue-900 hover:scale-110 hover:brightness-85">Add Event</Link>
+          <Link href="/events" className="transition text-2xl font-semibold text-blue-900 hover:scale-110 hover:brightness-85">Events</Link>
+          <Link href="/addevent" className="transition text-2xl font-semibold text-blue-900 hover:scale-110 hover:brightness-85">Add Event</Link>
         </nav>
       </Card>
     </div>
