@@ -3,6 +3,11 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useEffect } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { GestureHandling } from "leaflet-gesture-handling";
+import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
+
+// Enable gesture handling globally
+L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
 interface Coordinates {
   lat: number;
@@ -46,13 +51,19 @@ const eventIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-// Component to recenter map when location changes
-function RecenterMap({ center }: { center: Coordinates }) {
+// Component to recenter map when location changes and enable gesture handling
+function MapController({ center }: { center: Coordinates }) {
   const map = useMap();
 
   useEffect(() => {
     map.setView([center.lat, center.lng], map.getZoom());
   }, [center, map]);
+
+  useEffect(() => {
+    // Enable gesture handling for two-finger scroll panning
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (map as any).gestureHandling?.enable();
+  }, [map]);
 
   return null;
 }
@@ -70,7 +81,7 @@ export default function MapComponent({ userLocation, events }: MapComponentProps
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      <RecenterMap center={userLocation} />
+      <MapController center={userLocation} />
 
       {/* User location marker */}
       <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
