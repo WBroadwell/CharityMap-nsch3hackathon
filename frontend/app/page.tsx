@@ -1,16 +1,17 @@
 import Image from "next/image";
+import { Card } from "@/components/ui/card";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold">Welcome to the Charity Map!</h1>
-      
+    <main className="flex min-h-screen flex-col items-center">
       <Image
-        src="/logo.png"
+        src="/charitymaplogo.png"
         alt="Logo"
-        width={200}
-        height={200}
+        width={450}
+        height={450}
       />
+      <h1 className="text-4xl font-bold">Welcome to Charity Map!</h1>
+      <Card>Charity Map is a hub for connecting volunteers and donors with local opportunities and events!</Card>
     </main>
   );
 }
