@@ -3,5 +3,7 @@ export interface NewEvent {
     eventHost: string;
     date: Date;
     location: string;
+    latitude: number | null;
+    longitude: number | null;
     description: string;
-};
+}

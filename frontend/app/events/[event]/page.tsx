@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Event } from '@/types/Event';
-
+import { parseLocalDate } from '@/lib/utils';
 
 interface EventPageProps {
   params: Promise<{ event: string }>;
@@ -45,7 +45,7 @@ export default function IndividualEvent({ params }: EventPageProps) {
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Date</p>
-                                    <p className="mt-1 text-xl text-gray-900">{new Date(eventDetails.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                    <p className="mt-1 text-xl text-gray-900">{parseLocalDate(eventDetails.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
                                 </div>
                             </div>
 

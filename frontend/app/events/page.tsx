@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Event } from "@/types/Event";
 import Link from "next/dist/client/link";
+import { parseLocalDate } from "@/lib/utils";
 
 /*
 events should be :
@@ -79,7 +80,7 @@ export default function Events() {
                                             </div>
                                             <div className="text-right">
                                                 <div className="bg-rose-100 text-rose-600 px-3 py-1 rounded-full text-sm font-medium">
-                                                    {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                                    {parseLocalDate(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                                 </div>
                                             </div>
                                         </div>

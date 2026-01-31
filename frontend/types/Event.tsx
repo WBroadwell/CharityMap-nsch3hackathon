@@ -4,6 +4,8 @@ export interface Event {
     host: string;
     date: Date;
     location: string;
+    latitude: number | null;
+    longitude: number | null;
     description: string;
-    distanceFromUser: number;
+    distanceFromUser?: number;
 }
