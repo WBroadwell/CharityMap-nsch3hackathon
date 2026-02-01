@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
@@ -23,19 +23,7 @@ export default function Profile() {
 
     const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
-    useEffect(() => {
-        if (!isLoading && !user) {
-            router.push("/signin");
-        }
-    }, [user, isLoading, router]);
-
-    useEffect(() => {
-        if (token) {
-            fetchMyEvents();
-        }
-    }, [token]);
-
-    const fetchMyEvents = async () => {
+    const fetchMyEvents = useCallback(async () => {
         try {
             const response = await fetch(`${baseUrl}/my-events`, {
                 headers: {
@@ -50,7 +38,20 @@ export default function Profile() {
             console.error("Error fetching events:", error);
         }
         setIsLoadingEvents(false);
-    };
+    }, [baseUrl, token]);
+
+    useEffect(() => {
+        if (!isLoading && !user) {
+            router.push("/signin");
+        }
+    }, [user, isLoading, router]);
+
+    useEffect(() => {
+        if (token) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- data fetching on token change
+            fetchMyEvents();
+        }
+    }, [token, fetchMyEvents]);
 
     const handleDelete = async (eventId: number) => {
         try {
@@ -99,6 +100,11 @@ export default function Profile() {
                                     {user.organization_name.charAt(0).toUpperCase()}
                                 </span>
                             </div>
+                            {user.is_admin && (
+                                <span className="ml-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-md">
+                                    Admin
+                                </span>
+                            )}
                         </div>
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                             <div>

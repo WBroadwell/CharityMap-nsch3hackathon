@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { Event } from "@/types/Event";
 
@@ -36,7 +36,6 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 export default function MapPage() {
   const [userLocation, setUserLocation] = useState<Coordinates | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<(Event & { distance: number })[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [locationStatus, setLocationStatus] = useState<"loading" | "granted" | "denied" | "manual">("loading");
   const [isSearching, setIsSearching] = useState(false);
@@ -77,38 +76,40 @@ export default function MapPage() {
         }
       );
     } else {
-      setLocationStatus("denied");
-      setUserLocation({ lat: 39.8283, lng: -98.5795 });
+      // Defer state update to avoid synchronous setState in effect
+      const timer = setTimeout(() => {
+        setLocationStatus("denied");
+        setUserLocation({ lat: 39.8283, lng: -98.5795 });
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, []);
 
   // Filter events within 50 miles when user location or events change
-  useEffect(() => {
-    if (userLocation && events.length > 0) {
-      const eventsWithDistance = events
-        .filter((event) => event.latitude != null && event.longitude != null)
-        .map((event) => {
-          const distance = calculateDistance(
-            userLocation.lat,
-            userLocation.lng,
-            event.latitude!,
-            event.longitude!
-          );
+  const filteredEvents = useMemo(() => {
+    if (!userLocation || events.length === 0) return [];
 
-          return {
-            ...event,
-            distance,
-            coordinates: { lat: event.latitude!, lng: event.longitude! },
-          };
-        });
+    const eventsWithDistance = events
+      .filter((event) => event.latitude != null && event.longitude != null)
+      .map((event) => {
+        const distance = calculateDistance(
+          userLocation.lat,
+          userLocation.lng,
+          event.latitude!,
+          event.longitude!
+        );
 
-      // Filter events within 50 miles
-      const nearby = eventsWithDistance
-        .filter((event) => event.distance <= 50)
-        .sort((a, b) => a.distance - b.distance);
+        return {
+          ...event,
+          distance,
+          coordinates: { lat: event.latitude!, lng: event.longitude! },
+        };
+      });
 
-      setFilteredEvents(nearby);
-    }
+    // Filter events within 50 miles
+    return eventsWithDistance
+      .filter((event) => event.distance <= 50)
+      .sort((a, b) => a.distance - b.distance);
   }, [userLocation, events]);
 
   // Search for location using Nominatim (OpenStreetMap)

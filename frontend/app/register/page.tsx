@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
@@ -21,15 +21,7 @@ function RegisterForm() {
     const router = useRouter();
     const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
-    useEffect(() => {
-        if (inviteToken) {
-            validateToken();
-        } else {
-            setIsValidating(false);
-        }
-    }, [inviteToken]);
-
-    const validateToken = async () => {
+    const validateToken = useCallback(async () => {
         try {
             const response = await fetch(`${baseUrl}/auth/verify-invite/${inviteToken}`);
             const data = await response.json();
@@ -40,11 +32,20 @@ function RegisterForm() {
             } else {
                 setError("Invalid or expired invite link");
             }
-        } catch (err) {
+        } catch {
             setError("Failed to verify invite link");
         }
         setIsValidating(false);
-    };
+    }, [baseUrl, inviteToken]);
+
+    useEffect(() => {
+        if (inviteToken) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect -- token validation on mount
+            validateToken();
+        } else {
+            setIsValidating(false);
+        }
+    }, [inviteToken, validateToken]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

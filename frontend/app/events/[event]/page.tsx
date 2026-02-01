@@ -66,6 +66,22 @@ export default function IndividualEvent({ params }: EventPageProps) {
                                 <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">About this event</h2>
                                 <p className="text-gray-700 text-lg leading-relaxed">{eventDetails.description}</p>
                             </div>
+
+                            {eventDetails.contact_info && (
+                                <div className="border-t border-gray-200 pt-6">
+                                    <div className="flex items-start space-x-4">
+                                        <div className="flex-shrink-0 w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center">
+                                            <svg className="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Contact</p>
+                                            <p className="mt-1 text-xl text-gray-900">{eventDetails.contact_info}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 ) : (

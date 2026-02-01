@@ -1,12 +1,11 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
       {/* Hero Section */}
-      <div className="max-w-4xl mx-auto px-4 pt-20 pb-16 flex flex-col items-center">
+      <div className="max-w-4xl mx-auto px-4 pt-48 pb-16 flex flex-col items-center">
         <h1 className="text-5xl sm:text-6xl font-bold text-gray-800 text-center leading-tight">
           Welcome to <span className="text-transparent bg-clip-text bg-linear-to-r from-rose-500 to-pink-500">Charity Map</span>!
         </h1>
@@ -42,7 +41,7 @@ export default function Home() {
               </svg>
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-3">Discover Events</h3>
-            <p className="text-gray-600">Browse local charity events happening near you and find causes you care about.</p>
+            <p className="text-gray-600">Browse local charititable events happening near you and find causes you care about.</p>
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition">
@@ -73,7 +72,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-white mb-6">Our Mission</h2>
           <p className="text-xl text-rose-100 leading-relaxed">
             Charity Map aims to bridge the gap between charitable organizations and community members
-            who want to make a difference. We believe that everyone has the power to contribute,
+            who want to make a difference. I believe that everyone has the power to contribute,
             and finding the right opportunity should be simple and accessible.
           </p>
         </div>
@@ -86,15 +85,16 @@ export default function Home() {
           <div className="p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">About This Project</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Charity Map was developed by <span className="font-semibold text-rose-500">William B.</span> for
-              the <span className="font-semibold">NSCH3 Hackathon</span>. This project was built with the goal
-              of creating a platform that makes it easier for people to discover and participate in charitable
-              activities within their local communities.
+                Charity Map was developed for
+                the <span className="font-semibold">NSCH3 Hackathon</span>. This project was built with the goal
+                of creating a platform that makes it easier for people to discover and participate in charitable
+                activities within their local communities, while also providing organizations with a centralized site
+                to promote their events and causes.
             </p>
             <p className="text-gray-600 leading-relaxed">
-              The NSCH3 Hackathon challenges developers to create innovative solutions that address real-world
-              problems. Charity Map tackles the challenge of connecting passionate volunteers with organizations
-              that need their help, making community involvement more accessible than ever.
+                The NSCH3 Hackathon challenges developers to create innovative solutions that address real-world
+                problems. Charity Map tackles the challenge of connecting passionate volunteers with organizations
+                that need their help, making community involvement more accessible than ever.
             </p>
             <div className="mt-6 flex items-center gap-4">
               <span className="px-4 py-2 bg-rose-100 text-rose-600 rounded-full text-sm font-medium">Next.js</span>

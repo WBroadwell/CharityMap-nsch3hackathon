@@ -29,17 +29,16 @@ export default function AddEvent() {
     const {
         register,
         handleSubmit,
-        formState: { errors },
         reset,
     } = useForm<NewEvent>({
         defaultValues: {
             eventName: "",
-            eventHost: "",
             date: new Date(),
             location: "",
             latitude: null,
             longitude: null,
             description: "",
+            contactInfo: "",
         },
     });
 
@@ -101,12 +100,12 @@ export default function AddEvent() {
                 },
                 body: JSON.stringify({
                     name: data.eventName,
-                    host: data.eventHost || user?.organization_name,
                     date: data.date,
                     location: selectedLocation.address,
                     latitude: selectedLocation.lat,
                     longitude: selectedLocation.lng,
                     description: data.description,
+                    contact_info: data.contactInfo,
                 }),
             });
 
@@ -190,16 +189,16 @@ export default function AddEvent() {
                                 {...register("eventName", { required: true })}
                             />
                         </div>
+
+                        {/* Show the organization creating the event */}
                         <div className="flex flex-col">
-                            <label className="mb-2 text-sm font-medium text-gray-700">Host / Organization</label>
-                            <input
-                                type="text"
-                                id="eventHost"
-                                className="border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none transition"
-                                placeholder="Who is hosting this event?"
-                                {...register("eventHost", { required: true })}
-                            />
+                            <label className="mb-2 text-sm font-medium text-gray-700">Host Organization</label>
+                            <div className="border border-gray-200 bg-gray-50 rounded-xl p-3 text-gray-600">
+                                {user?.organization_name}
+                            </div>
+                            <p className="mt-1 text-xs text-gray-500">This is automatically set to your organization name</p>
                         </div>
+
                         <div className="flex flex-col">
                             <label className="mb-2 text-sm font-medium text-gray-700">Date</label>
                             <input
@@ -302,6 +301,19 @@ export default function AddEvent() {
                                 {...register("description", { required: false })}
                             ></textarea>
                         </div>
+
+                        <div className="flex flex-col">
+                            <label className="mb-2 text-sm font-medium text-gray-700">Contact Information</label>
+                            <input
+                                type="text"
+                                id="contactInfo"
+                                className="border border-gray-300 rounded-xl p-3 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none transition"
+                                placeholder="Email, phone number, or website for inquiries"
+                                {...register("contactInfo", { required: false })}
+                            />
+                            <p className="mt-1 text-xs text-gray-500">How can people reach you about this event?</p>
+                        </div>
+
                         <button
                             type="submit"
                             className="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-xl p-4 font-semibold hover:shadow-lg hover:scale-[1.02] transition"

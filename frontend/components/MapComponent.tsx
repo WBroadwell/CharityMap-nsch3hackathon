@@ -1,3 +1,16 @@
+/**
+ * Map Component
+ *
+ * An interactive map that displays charity events near the user's location.
+ * Uses Leaflet for map rendering and OpenStreetMap for tiles.
+ *
+ * Features:
+ * - Shows user's current location (blue marker)
+ * - Displays nearby events as red markers
+ * - Clicking an event marker shows details and a link to the event page
+ * - Supports two-finger scroll/pinch zoom on touch devices
+ */
+
 "use client";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useEffect } from "react";
@@ -6,9 +19,11 @@ import "leaflet/dist/leaflet.css";
 import { GestureHandling } from "leaflet-gesture-handling";
 import "leaflet-gesture-handling/dist/leaflet-gesture-handling.css";
 
-// Enable gesture handling globally
+// Enable gesture handling for better mobile experience
+// Requires two-finger scroll instead of one to pan the map
 L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
+// Type definitions
 interface Coordinates {
   lat: number;
   lng: number;
@@ -23,8 +38,8 @@ interface EventWithDistance {
   latitude: number | null;
   longitude: number | null;
   description: string;
-  distance: number;
-  coordinates?: Coordinates;
+  distance: number;           // Miles from user's location
+  coordinates?: Coordinates;  // Parsed lat/lng for map
 }
 
 interface MapComponentProps {
@@ -32,7 +47,7 @@ interface MapComponentProps {
   events: EventWithDistance[];
 }
 
-// Fix for default marker icons in Leaflet with Next.js
+// Custom marker icon for user's location (blue)
 const userIcon = new L.Icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
@@ -42,6 +57,7 @@ const userIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
+// Custom marker icon for events (red)
 const eventIcon = new L.Icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
@@ -51,16 +67,22 @@ const eventIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-// Component to recenter map when location changes and enable gesture handling
+/**
+ * MapController - Internal component to manage map state
+ *
+ * Handles recentering the map when the user's location changes
+ * and enables gesture handling for better mobile UX.
+ */
 function MapController({ center }: { center: Coordinates }) {
   const map = useMap();
 
+  // Recenter map when location changes
   useEffect(() => {
     map.setView([center.lat, center.lng], map.getZoom());
   }, [center, map]);
 
+  // Enable two-finger scroll on touch devices
   useEffect(() => {
-    // Enable gesture handling for two-finger scroll panning
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (map as any).gestureHandling?.enable();
   }, [map]);
@@ -68,6 +90,11 @@ function MapController({ center }: { center: Coordinates }) {
   return null;
 }
 
+/**
+ * MapComponent - Main exported component
+ *
+ * Renders the Leaflet map with user location and event markers.
+ */
 export default function MapComponent({ userLocation, events }: MapComponentProps) {
   return (
     <MapContainer
@@ -76,14 +103,16 @@ export default function MapComponent({ userLocation, events }: MapComponentProps
       scrollWheelZoom={true}
       className="w-full h-[600px] rounded-xl z-0"
     >
+      {/* Map tiles from OpenStreetMap */}
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
+      {/* Controller for map state management */}
       <MapController center={userLocation} />
 
-      {/* User location marker */}
+      {/* User's location marker (blue) */}
       <Marker position={[userLocation.lat, userLocation.lng]} icon={userIcon}>
         <Popup>
           <div className="text-center">
@@ -92,7 +121,7 @@ export default function MapComponent({ userLocation, events }: MapComponentProps
         </Popup>
       </Marker>
 
-      {/* Event markers */}
+      {/* Event markers (red) */}
       {events.map((event) => (
         event.coordinates && (
           <Marker
