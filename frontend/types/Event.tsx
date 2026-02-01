@@ -15,5 +15,6 @@ export interface Event {
     longitude: number | null;      // For map positioning (optional)
     description: string;           // Event details
     contact_info: string | null;   // How to reach organizers (optional)
+    user_id: number;               // ID of the user who created the event
     distanceFromUser?: number;     // Calculated distance in miles (only on map page)
 }
